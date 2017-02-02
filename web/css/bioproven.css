@@ -1,0 +1,118 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30-ene-2017, 14:02:00
+    Author     : alumne
+*/
+
+html{
+  width: 100%;
+  height: 100%;
+  background: white;
+  overflow-x: hidden;
+}
+body{
+  width: 100%;
+  height: 100%;
+
+}
+header{
+ border-bottom: solid blue;
+  width: 100%;
+  height: 30%;
+  overflow: hidden;
+}
+header img{
+  width: 100%;
+  height: 280%;
+}
+
+nav{
+  width: 100%;
+  height: 6%;
+  background-color: black;
+  color:white;
+  
+}
+nav ul{
+  width: 100%;
+  height: 100%;
+}
+nav li{
+
+  float: right;
+  display: inline;
+  height: 65%;
+  width: 33.1%;
+  text-align: center;
+  padding-top: 0.8%;
+}
+nav li:hover  {
+  background-color: #A4A4A4;
+  border-radius: 0.5em;
+}
+nav a{
+  text-decoration: none;
+  color: white;
+  font-size:0.9vw;
+  font-size:2vh;
+  text-align: center;
+  
+}
+
+main{
+    border: solid;
+    width: 100%;
+    height: 100%;
+}
+#formToCreateForm{
+
+    width: 50%;
+    height: 90%;
+    margin:auto;
+    margin-top: 2%; 
+    font-size: 1vw;
+    background: #e6e6e6;
+    border-radius: 1%;  
+    padding-top: 2%;
+}
+#tableCrearForm {
+    width: 100%;
+    height: 105%;
+    text-align: center;
+    
+    
+}
+#tableCrearForm td,#tableCrearForm th{ 
+    width: 10%;
+
+
+}
+
+#tableCrearForm input[type=text]{
+     width: 80%;
+     height: 5vh;
+}
+#tableCrearForm input[type=text]:focus{
+     width: 95%;
+
+}
+#tableCrearForm select{
+     width: 50%;
+     height: 6vh;
+}
+
+#tdExtension{
+    text-align: left;
+}
+#buttonCreateReset,#buttonCreateSubmit{
+    width: 35%;
+    height: 10vh;
+    border-radius: 50%;
+    font-size: 1vw;
+    background:#1cebd7;
+    margin-top: 20px;
+}
