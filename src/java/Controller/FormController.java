@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import Model.FormClass;
+import Model.Persist.FormADO;
 import ValidationForm.ValidationForm;
 import Views.FormView;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +24,9 @@ public class FormController {
         FormView formView= new FormView();
         return formView.createFormView();
     }
-    public boolean createForm(HttpServletRequest request, HttpServletResponse response,String ruta) {
+    public String createForm(HttpServletRequest request, HttpServletResponse response,String ruta) {
         boolean checkForm=true;
+        String result="";
         if(!ValidationForm.onlyVarchar(request.getParameter("nameFile"))){
             checkForm=false;
         }
@@ -39,8 +42,27 @@ public class FormController {
             } 
         }
         if(checkForm){
-            
+            FormClass formObj = new FormClass(request.getParameter("nameFile"),request.getParameter("titleForm"));
+            boolean campExists=false;
+            boolean check;
+            for(int i=1;i<=5;i++){
+                 if(!formObj.addField(request.getParameter("camp"+i),request.getParameter("select"+i))){
+                     campExists=true;
+                 }         
+             }
+                if(!campExists){
+                    FormADO formADOObj = new FormADO(ruta);
+                    formADOObj.createForm(formObj);
+                    result="<div class='createCorrecly'>Form create correctly!</div>";
+                    
+                }
+                else{
+                    result="<div class='createError'>there are repeated camps </div>";
+                }
         }
-        return checkForm;
+        else{
+            result="<div class='createError'>you may put charecters no valids</div>";
+        }
+        return result;
     } 
 }

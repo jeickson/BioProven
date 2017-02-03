@@ -94,13 +94,8 @@ public class MainController extends HttpServlet {
             }else if(request.getParameter("buttonCreateSubmit")!=null){
                 String result="";
                 FormController formControllerObj = new FormController();
-                Boolean formCreated=formControllerObj.createForm(request,response,ruta);
-                if(formCreated){
-                    result="<div class='createCorrecly'>Form create correctly!</div>";
-                }
-                else{
-                    result="<div class='createError'>you may put charecters no valids</div>";
-                }
+                result=formControllerObj.createForm(request,response,ruta);
+                
                 RequestDispatcher oDispatcher;
                 request.setAttribute("formBuilded", result);
                 oDispatcher=request.getRequestDispatcher("bioproven.jsp");
