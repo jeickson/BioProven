@@ -95,10 +95,16 @@ public class MainController extends HttpServlet {
                 String result="";
                 FormController formControllerObj = new FormController();
                 Boolean formCreated=formControllerObj.createForm(request,response,ruta);
+                if(formCreated){
+                    result="<div class='createCorrecly'>Form create correctly!</div>";
+                }
+                else{
+                    result="<div class='createError'>you may put charecters no valids</div>";
+                }
                 RequestDispatcher oDispatcher;
                 request.setAttribute("formBuilded", result);
-                            oDispatcher=request.getRequestDispatcher("bioproven.jsp");
-                            oDispatcher.forward(request,response);
+                oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                oDispatcher.forward(request,response);
             }
             else{
                 response.sendRedirect("index.jsp");
