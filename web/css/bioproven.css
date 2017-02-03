@@ -78,6 +78,7 @@ main{
     background: #e6e6e6;
     border-radius: 1%;  
     padding-top: 2%;
+    border: solid #00fffc;
 }
 #tableCrearForm {
     width: 100%;
@@ -113,6 +114,5 @@ main{
     height: 10vh;
     border-radius: 50%;
     font-size: 1vw;
-    background:#1cebd7;
-    margin-top: 20px;
+    background:#00fffc;
 }

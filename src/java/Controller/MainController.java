@@ -34,11 +34,11 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String ruta = getServletContext().getRealPath("/WEB-INF");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             if(request.getParameter("initBotton")!=null){
                 UserController userControllerObj=new UserController();  
-                String ruta = getServletContext().getRealPath("/WEB-INF");
                 RequestDispatcher oDispatcher;
                 switch(request.getParameter("initBotton")){
                 case "Login": 
@@ -70,6 +70,7 @@ public class MainController extends HttpServlet {
                  }
             } else if (request.getParameter("actionForm")!=null){
                 RequestDispatcher oDispatcher;
+                FormController formControllerObj = new FormController();
                 switch(request.getParameter("actionForm")){
                 case "logout": 
                         HttpSession session = request.getSession();
@@ -78,8 +79,7 @@ public class MainController extends HttpServlet {
                      break;
                 case "createForm":  
                     String formBuilded;
-                    FormController formControllerObj = new FormController();
-                    formBuilded=formControllerObj.CreateForm();
+                    formBuilded=formControllerObj.CreateFormView();
                     request.setAttribute("formBuilded", formBuilded);
                             oDispatcher=request.getRequestDispatcher("bioproven.jsp");
                             oDispatcher.forward(request,response);
@@ -91,7 +91,16 @@ public class MainController extends HttpServlet {
                     break;
                  }
 
-            }else{
+            }else if(request.getParameter("buttonCreateSubmit")!=null){
+                String result="";
+                FormController formControllerObj = new FormController();
+                Boolean formCreated=formControllerObj.createForm(request,response,ruta);
+                RequestDispatcher oDispatcher;
+                request.setAttribute("formBuilded", result);
+                            oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                            oDispatcher.forward(request,response);
+            }
+            else{
                 response.sendRedirect("index.jsp");
             }
            

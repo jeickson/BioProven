@@ -85,4 +85,9 @@ public class ValidationForm {
         Matcher mat = pat.matcher(date);
        return mat.matches();
     }
+    public static boolean onlyVarchar (String nombre){
+        Pattern pat = Pattern.compile("^[A-Za-z0-9-_]+$");
+        Matcher mat = pat.matcher(nombre);
+       return mat.matches();
+    }
 }

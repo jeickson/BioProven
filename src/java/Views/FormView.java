@@ -11,7 +11,7 @@ package Views;
  */
 public class FormView {
     
-    public String createForm(){
+    public String createFormView(){
         
         String formBuilder = ""
                 + "<form method='post' action='MainController' id='formToCreateForm'>"
@@ -82,8 +82,8 @@ public class FormView {
                                     + "</td>"
                                 + "</tr>"
                                     + "<th></th>"
-                                    + "<td><input type='reset' name='reset' id='buttonCreateReset' value='Reset'/></td>"
-                                    + "<td><input type='submit' name='submit' id='buttonCreateSubmit' value='Create'/></td>"
+                                    + "<td><input type='reset' name='buttonCreateReset' id='buttonCreateReset' value='Reset'/></td>"
+                                    + "<td><input type='submit' name='buttonCreateSubmit' id='buttonCreateSubmit' value='Create'/></td>"
                                 + "</tr>"
                             + "</table>"
                 + "</form>";
