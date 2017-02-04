@@ -86,7 +86,12 @@ public class ValidationForm {
        return mat.matches();
     }
     public static boolean onlyVarchar (String nombre){
-        Pattern pat = Pattern.compile("^[A-Za-z0-9-_]+$");
+        Pattern pat = Pattern.compile("^[A-Za-z0-9]+$");
+        Matcher mat = pat.matcher(nombre);
+       return mat.matches();
+    }
+    public static boolean onlyVarcharWthSpace (String nombre){
+        Pattern pat = Pattern.compile("^[A-Za-z0-9 ]+$");
         Matcher mat = pat.matcher(nombre);
        return mat.matches();
     }

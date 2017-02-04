@@ -148,5 +148,23 @@ public class UserClass {
         }
         return lineFormated;
     }
+    public void toObj(String line){
+         String[] tokens;
+         tokens=line.split(":");
+         this.setNick(tokens[0]);
+         this.setPassword(tokens[1]);
+         this.setName(tokens[2]);
+         this.setSurname(tokens[3]);
+         this.setDni(tokens[4]);
+         this.setDepartment(tokens[5]);
+         this.setEmail(tokens[6]);
+         this.setBirthdayDate(tokens[7]);
+         this.setSex(tokens[8]);
+         if (tokens[9]!=null && !tokens[9].equals(":")){
+             String[]intereses=tokens[9].split(",");
+             this.setInterests(intereses);
+         }
+        
+    }
     
 }

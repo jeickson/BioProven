@@ -67,4 +67,13 @@ public class UserADO {
             return 3;
         }
     }
+    public String getUser (UserClass user,int n,int n2){
+        DataFileManagement dataFileObj= new DataFileManagement(this.ruta);        
+        try {
+            return dataFileObj.findByTwoField(user.getNick(),user.getPassword(),n,n2);
+        } catch (IOException ex) {
+            return null;
+        }
+            
+    }
 }

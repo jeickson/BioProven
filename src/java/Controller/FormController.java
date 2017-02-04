@@ -7,10 +7,15 @@ package Controller;
 
 import Model.FormClass;
 import Model.Persist.FormADO;
+import Model.UserClass;
 import ValidationForm.ValidationForm;
 import Views.FormView;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,13 +29,16 @@ public class FormController {
         FormView formView= new FormView();
         return formView.createFormView();
     }
+    
+    
+    
     public String createForm(HttpServletRequest request, HttpServletResponse response,String ruta) {
         boolean checkForm=true;
         String result="";
         if(!ValidationForm.onlyVarchar(request.getParameter("nameFile"))){
             checkForm=false;
         }
-        if(!ValidationForm.onlyVarchar(request.getParameter("titleForm"))){
+        if(!ValidationForm.onlyVarcharWthSpace(request.getParameter("titleForm"))){
             checkForm=false;
         }
         for(int i=1;i<=5;i++){
@@ -42,18 +50,31 @@ public class FormController {
             } 
         }
         if(checkForm){
-            FormClass formObj = new FormClass(request.getParameter("nameFile"),request.getParameter("titleForm"));
-            boolean campExists=false;
-            boolean check;
-            for(int i=1;i<=5;i++){
-                 if(!formObj.addField(request.getParameter("camp"+i),request.getParameter("select"+i))){
-                     campExists=true;
-                 }         
-             }
+                FormClass formObj = new FormClass(request.getParameter("nameFile"),request.getParameter("titleForm"));
+                boolean campExists=false;
+                boolean check;
+                for(int i=1;i<=5;i++){
+                    if(!formObj.addField(request.getParameter("camp"+i),request.getParameter("select"+i))){
+                        campExists=true;
+                       }         
+                }
                 if(!campExists){
-                    FormADO formADOObj = new FormADO(ruta);
-                    formADOObj.createForm(formObj);
-                    result="<div class='createCorrecly'>Form create correctly!</div>";
+                    HttpSession session = request.getSession(true);
+                    UserClass userObj = (UserClass) session.getAttribute("user");
+                    
+                    FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni());
+                    try {
+                        if(formADOObj.createForm(formObj)){
+                            result="<div class='createCorrecly'>Form creates correctly!</div>";
+                        }
+                        else{
+                            result="<div class='createError'>This Form already exists</div>";
+                        }
+                        
+                    } catch (IOException ex) {
+                       result="<div class='createError'>it cant connect to the BaseData </div>";
+                    }
+                    
                     
                 }
                 else{

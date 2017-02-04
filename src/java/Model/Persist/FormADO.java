@@ -6,6 +6,7 @@
 package Model.Persist;
 
 import Model.FormClass;
+import java.io.IOException;
 
 /**
  *
@@ -21,7 +22,17 @@ public class FormADO {
         this.ruta = ruta;
     }
     //methods
-    public void createForm(FormClass formObj){
+    public boolean createForm(FormClass formObj) throws IOException{
         //Nom Fitxer:Titol:
+        DataFileManagement dataFileObj= new DataFileManagement(this.ruta+".csv");
+        if(dataFileObj.findBySpecificField(formObj.getSaveIn()+".csv", 0)==null){
+            dataFileObj.insertRegister(formObj.getSaveIn()+".csv"+":"+formObj.getTitle()+":\r\n");
+            dataFileObj.setFilePath(this.ruta+"/"+formObj.getSaveIn()+".csv");
+            dataFileObj.insertRegister(formObj.toCSV(":"));
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

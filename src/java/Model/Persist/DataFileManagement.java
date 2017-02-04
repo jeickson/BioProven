@@ -25,6 +25,10 @@ public class DataFileManagement {
     public DataFileManagement(String filePath) {
         this.filePath = filePath;
     }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
     
     //methods
     

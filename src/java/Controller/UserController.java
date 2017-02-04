@@ -45,16 +45,22 @@ public class UserController {
                         break;
                     case 1:
                         result ="OK";
-
-                                HttpSession session = request.getSession();
-                                if(session.getAttribute("user")==null){
-                                   session.setAttribute("user",UserObj);
-                                   session.setMaxInactiveInterval(-1);
-                                }else{
-                                 result ="there already is an active session";
+                                UserClass UserObj2=new UserClass();
+                                String line="";
+                                line=userADOObj.getUser(UserObj,0,1);
+                                if(line!=null){
+                                    UserObj2.toObj(line);
+                                    HttpSession session = request.getSession();
+                                    if(session.getAttribute("user")==null){
+                                       session.setAttribute("user",UserObj2);
+                                       session.setMaxInactiveInterval(-1);
+                                    }else{
+                                     result ="there already is an active session";
+                                    }
                                 }
-                        
-
+                                else{
+                                    result ="unexpected error";
+                                }                       
                         break;
                     default:
                         result ="<p>Error access to Base Data</p>";

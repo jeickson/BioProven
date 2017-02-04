@@ -6,6 +6,7 @@
 package Model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  *
@@ -64,6 +65,18 @@ public class FormClass {
             this.fields.put(fieldName,fieldType);
             return true;
         }
+    }
+
+    public String toCSV(String delimiter) {
+        String result="";
+        
+        Iterator it = this.fields.keySet().iterator();
+        while(it.hasNext()){
+          String key = (String) it.next();
+          result+=key+";"+this.fields.get(key)+delimiter;
+        }
+        result+="\r\n";
+        return result;
     }
     
 }
