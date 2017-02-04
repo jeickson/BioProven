@@ -72,7 +72,7 @@ public class FormController {
                         }
                         
                     } catch (IOException ex) {
-                       result="<div class='createError'>it cant connect to the BaseData </div>";
+                       result="<div class='createError'>it couldnt connect to the BaseData </div>";
                     }
                     
                     
