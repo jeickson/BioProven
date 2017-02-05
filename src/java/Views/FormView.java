@@ -90,4 +90,18 @@ public class FormView {
         
         return formBuilder;
     }
+
+    public String SearchFormView(String[] formName) {
+        String formBuilder=""
+                + "<form method='post' id='formToSearch' action='MainController'>"
+                    + "<select name='formName'>";
+        for(String name:formName){
+                formBuilder+="<option value='"+name+"'>"+name+"</option>";
+        }             
+          formBuilder+="</select>"
+                     + "<input type='submit' name='searchFormBtn' value='Modify'>"
+                + "</form>";
+          return formBuilder;
+    }
+    
 }

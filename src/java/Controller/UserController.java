@@ -82,7 +82,7 @@ public class UserController {
             check=false;
             result+="<p>Name must be only characters</p>";
         }
-        if(!validation.noEspecialChars(request.getParameter("surname"))){
+        if(!validation.noEspecialCharsWthSpace(request.getParameter("surname"))){
             check=false;
             result+="<p>Surname must be only characters</p>";
         }

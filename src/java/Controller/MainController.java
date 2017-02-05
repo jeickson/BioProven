@@ -71,21 +71,24 @@ public class MainController extends HttpServlet {
             } else if (request.getParameter("actionForm")!=null){
                 RequestDispatcher oDispatcher;
                 FormController formControllerObj = new FormController();
+                String formBuilded;
                 switch(request.getParameter("actionForm")){
                 case "logout": 
                         HttpSession session = request.getSession();
                         session.invalidate();
                         response.sendRedirect("index.jsp");
                      break;
-                case "createForm":  
-                    String formBuilded;
-                    formBuilded=formControllerObj.CreateFormView();
-                    request.setAttribute("formBuilded", formBuilded);
-                            oDispatcher=request.getRequestDispatcher("bioproven.jsp");
-                            oDispatcher.forward(request,response);
+                case "createForm":                  
+                        formBuilded=formControllerObj.CreateFormView();
+                        request.setAttribute("formBuilded", formBuilded);
+                        oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                        oDispatcher.forward(request,response);
                      break;
-                case "searchForm":  
-                    
+                case "searchForm":   
+                        formBuilded=formControllerObj.searchForm();
+                        request.setAttribute("formBuilded", formBuilded);
+                        oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                        oDispatcher.forward(request,response);
                      break;
                 default:
                     break;

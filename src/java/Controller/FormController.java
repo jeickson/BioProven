@@ -85,5 +85,11 @@ public class FormController {
             result="<div class='createError'>you may put charecters no valids</div>";
         }
         return result;
-    } 
+    }
+    
+    public String searchForm(){
+     FormView formView= new FormView();
+     String[] formNames={"prueba","otra"};
+     return formView.SearchFormView(formNames);
+    }
 }

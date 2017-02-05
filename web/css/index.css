@@ -80,6 +80,7 @@ aside input[type=text], aside input[type=password]{
     width: 95%;
     margin-bottom: 2%;
     height: 50%;
+    border: solid 1px grey;
     border-radius:1em;
     font-size: 1.1vw;
 }

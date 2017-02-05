@@ -65,6 +65,7 @@ public class ValidationForm {
         Matcher mat = pat.matcher(nombre);
        return mat.matches();
     }
+    
     public static boolean noEspecialNick (String nombre){
         Pattern pat = Pattern.compile("^[A-Za-z0-9-_]+$");
         Matcher mat = pat.matcher(nombre);
@@ -92,6 +93,11 @@ public class ValidationForm {
     }
     public static boolean onlyVarcharWthSpace (String nombre){
         Pattern pat = Pattern.compile("^[A-Za-z0-9 ]+$");
+        Matcher mat = pat.matcher(nombre);
+       return mat.matches();
+    }
+    public static boolean noEspecialCharsWthSpace(String nombre){
+        Pattern pat = Pattern.compile("^[a-zA-Z ]+$");
         Matcher mat = pat.matcher(nombre);
        return mat.matches();
     }
