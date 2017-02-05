@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -60,18 +61,20 @@ public class MainController extends HttpServlet {
                         String result;
                         
                         result=userControllerObj.register(request,response,ruta);
-                            request.setAttribute("stringResult", result);
-                            oDispatcher=request.getRequestDispatcher("index.jsp");
-                            oDispatcher.forward(request,response);
+                        request.setAttribute("stringResult", result);
+                        oDispatcher=request.getRequestDispatcher("index.jsp");
+                        oDispatcher.forward(request,response);
 
                      break;
                 default:
                     break;
                  }
             } else if (request.getParameter("actionForm")!=null){
+                
                 RequestDispatcher oDispatcher;
                 FormController formControllerObj = new FormController();
                 String formBuilded;
+                
                 switch(request.getParameter("actionForm")){
                 case "logout": 
                         HttpSession session = request.getSession();
@@ -85,7 +88,15 @@ public class MainController extends HttpServlet {
                         oDispatcher.forward(request,response);
                      break;
                 case "searchForm":   
-                        formBuilded=formControllerObj.searchForm();
+                        try{
+                            formBuilded=formControllerObj.searchForm(request,response,ruta);
+                        }
+                        catch(FileNotFoundException notFound){
+                            formBuilded="Error to connect with DataBase";
+                        }
+                        catch(IOException ex){
+                            formBuilded="unexpected error";
+                        }
                         request.setAttribute("formBuilded", formBuilded);
                         oDispatcher=request.getRequestDispatcher("bioproven.jsp");
                         oDispatcher.forward(request,response);
@@ -95,6 +106,7 @@ public class MainController extends HttpServlet {
                  }
 
             }else if(request.getParameter("buttonCreateSubmit")!=null){
+                
                 String result="";
                 FormController formControllerObj = new FormController();
                 result=formControllerObj.createForm(request,response,ruta);

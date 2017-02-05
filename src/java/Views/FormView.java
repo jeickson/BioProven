@@ -5,6 +5,9 @@
  */
 package Views;
 
+import Model.FormClass;
+import java.util.List;
+
 /**
  *
  * @author alumne
@@ -91,15 +94,15 @@ public class FormView {
         return formBuilder;
     }
 
-    public String SearchFormView(String[] formName) {
+    public String SearchFormView(List<FormClass> allForms) {
         String formBuilder=""
                 + "<form method='post' id='formToSearch' action='MainController'>"
                     + "<select name='formName'>";
-        for(String name:formName){
-                formBuilder+="<option value='"+name+"'>"+name+"</option>";
+        for(FormClass form:allForms){
+                formBuilder+="<option value='"+form.getTitle()+"'>"+form.getTitle()+"</option>";
         }             
           formBuilder+="</select>"
-                     + "<input type='submit' name='searchFormBtn' value='Modify'>"
+                     + "<input type='submit' name='searchFormBtn' value='Search'>"
                 + "</form>";
           return formBuilder;
     }

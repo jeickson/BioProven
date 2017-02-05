@@ -10,7 +10,10 @@ import Model.Persist.FormADO;
 import Model.UserClass;
 import ValidationForm.ValidationForm;
 import Views.FormView;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -87,9 +90,16 @@ public class FormController {
         return result;
     }
     
-    public String searchForm(){
+    public String searchForm(HttpServletRequest request, HttpServletResponse response,String ruta) throws FileNotFoundException, IOException{
      FormView formView= new FormView();
-     String[] formNames={"prueba","otra"};
-     return formView.SearchFormView(formNames);
+     List<FormClass> allForms=new ArrayList();
+     
+     HttpSession session = request.getSession(true);
+     UserClass userObj = (UserClass) session.getAttribute("user");
+     FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni());
+     
+     allForms=formADOObj.getAllForms();
+     
+     return formView.SearchFormView(allForms);
     }
 }

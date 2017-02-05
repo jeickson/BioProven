@@ -6,7 +6,10 @@
 package Model.Persist;
 
 import Model.FormClass;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,7 +26,7 @@ public class FormADO {
     }
     //methods
     public boolean createForm(FormClass formObj) throws IOException{
-        //Nom Fitxer:Titol:
+        
         DataFileManagement dataFileObj= new DataFileManagement(this.ruta+".csv");
         if(dataFileObj.findBySpecificField(formObj.getSaveIn()+".csv", 0)==null){
             dataFileObj.insertRegister(formObj.getSaveIn()+".csv"+":"+formObj.getTitle()+":\r\n");
@@ -34,5 +37,22 @@ public class FormADO {
         else{
             return false;
         }
+    }
+
+    public List<FormClass> getAllForms() throws FileNotFoundException, IOException {
+       DataFileManagement dataFileObj= new DataFileManagement(this.ruta+".csv");
+       List<String> allLine=new ArrayList();
+       List<FormClass> allForms=new ArrayList();
+       FormClass formObj;
+       
+       allLine=dataFileObj.getAllData();
+       
+       
+       for (String line:allLine){
+           String[] dataLine= line.split(":");
+           formObj= new FormClass(dataLine[0],dataLine[1]);
+           allForms.add(formObj);
+       }
+       return allForms;
     }
 }
