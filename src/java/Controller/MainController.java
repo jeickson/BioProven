@@ -36,11 +36,13 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String ruta = getServletContext().getRealPath("/WEB-INF");
+        UserController userControllerObj=new UserController();  
+        RequestDispatcher oDispatcher;
+        FormController formControllerObj = new FormController();
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             if(request.getParameter("initBotton")!=null){
-                UserController userControllerObj=new UserController();  
-                RequestDispatcher oDispatcher;
                 switch(request.getParameter("initBotton")){
                 case "Login": 
                         String mssg;
@@ -69,10 +71,8 @@ public class MainController extends HttpServlet {
                 default:
                     break;
                  }
-            } else if (request.getParameter("actionForm")!=null){
+            } else if (request.getParameter("actionForm")!=null){               
                 
-                RequestDispatcher oDispatcher;
-                FormController formControllerObj = new FormController();
                 String formBuilded;
                 
                 switch(request.getParameter("actionForm")){
@@ -92,10 +92,10 @@ public class MainController extends HttpServlet {
                             formBuilded=formControllerObj.searchForm(request,response,ruta);
                         }
                         catch(FileNotFoundException notFound){
-                            formBuilded="Error to connect with DataBase";
+                            formBuilded="<form id='formToSearch'>Error to connect with DataBase</form>";
                         }
                         catch(IOException ex){
-                            formBuilded="unexpected error";
+                            formBuilded="<form id='formToSearch'>unexpected error</form>";
                         }
                         request.setAttribute("formBuilded", formBuilded);
                         oDispatcher=request.getRequestDispatcher("bioproven.jsp");
@@ -108,13 +108,66 @@ public class MainController extends HttpServlet {
             }else if(request.getParameter("buttonCreateSubmit")!=null){
                 
                 String result="";
-                FormController formControllerObj = new FormController();
                 result=formControllerObj.createForm(request,response,ruta);
-                
-                RequestDispatcher oDispatcher;
                 request.setAttribute("formBuilded", result);
                 oDispatcher=request.getRequestDispatcher("bioproven.jsp");
                 oDispatcher.forward(request,response);
+                
+            }else if(request.getParameter("searchFormBtn")!=null){                
+                String formBuilded;
+                try{
+                    formBuilded=formControllerObj.searchForm(request,response,ruta);
+                    formBuilded+=formControllerObj.searchFormMenu();
+                     HttpSession session = request.getSession(true);
+                     String formName=request.getParameter("formName");
+                    session.setAttribute("formSelected",formName);
+                }
+                catch(FileNotFoundException notFound){
+                    formBuilded="<form id='formToSearch'>Error to connect with DataBase</form>";
+                }
+                catch(IOException ex){
+                    formBuilded="<form id='formToSearch'>unexpected error</form>";
+                }             
+                request.setAttribute("formBuilded", formBuilded);
+                oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                oDispatcher.forward(request,response);
+                
+            }else if(request.getParameter("actionMenuSearch")!=null){
+                     HttpSession session = request.getSession();
+                     String optionBuilder="";
+                    if(session.getAttribute("formSelected")!=null){
+                            try{
+                                optionBuilder=formControllerObj.searchForm(request,response,ruta);
+                                optionBuilder+=formControllerObj.searchFormMenu(); 
+                                switch(request.getParameter("actionMenuSearch")){
+                                    case "toList":
+                                        optionBuilder+=formControllerObj.listForm(request,response,(String) session.getAttribute("formSelected"),ruta);
+                                        break;
+                                    case "toAdd":
+                                        break;
+                                    case "toConsult":
+                                        break;
+                                    case "toDelete":
+                                        break;
+                                    case "inform":
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            catch(FileNotFoundException notFound){
+                                optionBuilder="<form id='formToSearch'>Error to connect with DataBase</form>";
+                            }
+                            catch(IOException ex){
+                                optionBuilder="<form id='formToSearch'>unexpected error</form>";
+                            }             
+                        request.setAttribute("formBuilded", optionBuilder);
+                        oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                        oDispatcher.forward(request,response);
+                    }
+                    else{
+                        response.sendRedirect("bioproven.jsp");
+                    }
             }
             else{
                 response.sendRedirect("index.jsp");

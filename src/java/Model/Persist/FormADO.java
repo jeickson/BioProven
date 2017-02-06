@@ -55,4 +55,9 @@ public class FormADO {
        }
        return allForms;
     }
+
+    public List<String> getDataForm() throws FileNotFoundException, IOException {
+        DataFileManagement dataFileObj= new DataFileManagement(this.ruta);
+        return dataFileObj.getAllData();
+    }
 }

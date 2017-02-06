@@ -5,8 +5,10 @@
  */
 package Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -16,8 +18,8 @@ public class FormClass {
     //Properties
     private String saveIn;
     private String title;
-    HashMap<String,String>fields=null;
-    private String[] data;
+    private HashMap<String,String>fields=null;
+    private List<String> data;
     
     //Contructs
 
@@ -25,6 +27,12 @@ public class FormClass {
         this.saveIn = saveIn;
         this.title = title;
         this.fields=new HashMap<>();
+        this.data=new ArrayList<>();
+    }
+
+    public FormClass() {
+        this.fields=new HashMap<>();
+        this.data=new ArrayList<>();
     }
 
    
@@ -46,14 +54,24 @@ public class FormClass {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String[] getData() {
+
+    public HashMap<String, String> getFields() {
+        return fields;
+    }
+
+    public void setFields(HashMap<String, String> fields) {
+        this.fields = fields;
+    }
+
+    public List<String> getData() {
         return data;
     }
 
-    public void setData(String[] data) {
+    public void setData(List<String> data) {
         this.data = data;
     }
-    
+   
+
     //Methods
     
     public boolean addField(String fieldName,String fieldType){

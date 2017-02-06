@@ -99,12 +99,48 @@ public class FormView {
                 + "<form method='post' id='formToSearch' action='MainController'>"
                     + "<select name='formName'>";
         for(FormClass form:allForms){
-                formBuilder+="<option value='"+form.getTitle()+"'>"+form.getTitle()+"</option>";
+                formBuilder+="<option value='"+form.getSaveIn()+"'>"+form.getTitle()+"</option>";
         }             
           formBuilder+="</select>"
                      + "<input type='submit' name='searchFormBtn' value='Search'>"
                 + "</form>";
           return formBuilder;
+    }
+
+    public String menuSearchView() {
+        String menuBuilder=""
+                + "<form action='MainController' method='post' id='menuSearchForm'>"
+                        + "<button type='submit' name='actionMenuSearch' value='toList'>List</button>"
+                        + "<button type='submit' name='actionMenuSearch' value='toAdd'>Add</button>"
+                        + "<button type='submit' name='actionMenuSearch' value='toConsult'>Consult</button>"
+                        + "<button type='submit' name='actionMenuSearch' value='toDelete'>Delete</button>"
+                        + "<button type='submit' name='actionMenuSearch' value='inform'>Inform</button>"
+                + "</form>";
+        return menuBuilder;
+    }
+
+    public String tableListView(String[] ArrayData, String nameFormSelected) {
+           String tableBuilder=""
+                    + "<div id='tableListForm'><table >"
+                        + "<tr>"
+                            + "<th colspan='"+ArrayData[0].split(":").length+"'>"+nameFormSelected+"</th>"
+                        + "</tr>"
+                         + "<tr>";
+          String[] camps=ArrayData[0].split(":");  
+            for(String field:camps){
+                 tableBuilder+="<th>"+field.split(";")[0]+"</th>";                  
+            }
+            tableBuilder+="</tr>";
+            for(int i=1;i<ArrayData.length;i++){
+                tableBuilder+="<tr>";
+                for (String field:ArrayData[i].split(":")){
+                   tableBuilder+="<td>"+field+"</td>";
+                }
+                tableBuilder+="</tr>";
+            }
+           tableBuilder+="</table></div>";
+           
+           return  tableBuilder;
     }
     
 }

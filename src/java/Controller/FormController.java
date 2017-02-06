@@ -102,4 +102,24 @@ public class FormController {
      
      return formView.SearchFormView(allForms);
     }
+    
+    public String searchFormMenu() {
+                
+        FormView formView= new FormView();
+        return formView.menuSearchView();
+    }
+    public String listForm(HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException {
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+     
+        formObj.setData(formADOObj.getDataForm());
+        String[]  ArrayData={};
+        ArrayData=formObj.getData().toArray(ArrayData);
+        FormView formView= new FormView();
+        
+        
+       return formView.tableListView(ArrayData,nameFormSelected);
+    }
 }

@@ -169,3 +169,40 @@ main{
     border-radius: 2em;  
     font-size: 1vw;
 }
+#menuSearchForm{ 
+    width: 50%;
+    height: 10%;
+    margin:auto;
+    margin-top: 1%; 
+    font-size: 1vw;
+    background:#e6e6e6;
+    border-radius: 10em;      
+    border: solid 2px #00fffc;
+    text-align: center;
+}
+
+#menuSearchForm button{
+    margin-top: 2%;
+    width: 19%;
+    height: 50%;
+    
+}
+
+#tableListForm{  
+    margin-top: 1%; 
+}
+#tableListForm table{
+    border:solid 1px;
+    width: 50%;
+    background:#e6e6e6;
+    border: solid 2px black;
+    text-align: center;
+    margin:auto;
+}
+#tableListForm td,#tableListForm th{
+    width: 10%;
+    border:solid 2px black;
+}
+#tableListForm th{
+    font-size: 1vw;
+}
