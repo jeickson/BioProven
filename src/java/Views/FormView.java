@@ -142,5 +142,23 @@ public class FormView {
            
            return  tableBuilder;
     }
+
+    public String addRowView(String line) {
+       String AddRowBuilder=""
+               + "<form method='post' action='MainController' id='AddRowForm'>"
+                    + "<table id='tableAdd'>";     
+            for(String camp:line.split(":")){
+                 AddRowBuilder+="<tr>";                
+                    AddRowBuilder+="<th>"+camp.split(";")[0]+":</th>";
+                    AddRowBuilder+="<td><input type='text'name='"+camp.split(";")[0]+"Add'/></td>";
+                 AddRowBuilder+="</tr>";
+            } 
+            AddRowBuilder+="<tr>"; 
+                AddRowBuilder+="<td><input type='reset' name='addRowReset' value='Reset'/></td>";
+                AddRowBuilder+="<td><input type='submit' name='addRowSubmit' value='Add'/></td>";
+            AddRowBuilder+="</tr>";
+       AddRowBuilder+="</table></form>";
+       return AddRowBuilder;
+    }
     
 }

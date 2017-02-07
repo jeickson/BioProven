@@ -206,3 +206,36 @@ main{
 #tableListForm th{
     font-size: 1vw;
 }
+
+#AddRowForm{
+    width: 50%;
+    height: 40%;
+    margin:auto;
+    margin-top: 1%; 
+    font-size: 1vw;
+    background:#e6e6e6;
+    border-radius: 10em;      
+    border: solid 2px #00fffc;
+    text-align: center;
+}
+#AddRowForm table{
+    text-align: center;
+    margin: auto;
+    margin-top:3%;
+}
+
+#AddRowForm input[type=submit], #AddRowForm input[type=reset]{
+    
+    margin-top:6%;
+    float: right;
+    
+}
+#AddRowForm input[type=submit]{
+    width: 50%;
+    
+}
+#AddRowForm input[type=reset]{
+    width: 160%;
+    position: relative;
+    left: 100%;
+}

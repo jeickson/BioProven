@@ -137,13 +137,14 @@ public class MainController extends HttpServlet {
                      String optionBuilder="";
                     if(session.getAttribute("formSelected")!=null){
                             try{
-                                optionBuilder=formControllerObj.searchForm(request,response,ruta);
+                                
                                 optionBuilder+=formControllerObj.searchFormMenu(); 
                                 switch(request.getParameter("actionMenuSearch")){
                                     case "toList":
                                         optionBuilder+=formControllerObj.listForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "toAdd":
+                                         optionBuilder+=formControllerObj.addRowViewForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "toConsult":
                                         break;
@@ -168,6 +169,29 @@ public class MainController extends HttpServlet {
                     else{
                         response.sendRedirect("bioproven.jsp");
                     }
+            }else if (request.getParameter("addRowSubmit")!=null){
+                HttpSession session = request.getSession();
+                 String result="";
+                 if(session.getAttribute("formSelected")!=null){
+                     result=formControllerObj.searchFormMenu(); 
+                     try{                      
+                        if(!formControllerObj.addRow(request,response,(String) session.getAttribute("formSelected"),ruta)){
+                             result+="<form class='createError'>You may have left empty fields or entered invalid characters</form>";
+                        }
+                        else{                          
+                            result+="<form class='createCorrecly'>Row has added correctly</form>";
+                        }
+                     }
+                     catch(FileNotFoundException notFound){
+                        result="<form class='createError'>Error to connect with DataBase</form>";
+                    }
+                    catch(IOException ex){
+                        result="<form class='createError'>unexpected error</form>";
+                    } 
+                     request.setAttribute("formBuilded", result);
+                     oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                     oDispatcher.forward(request,response);
+                 }
             }
             else{
                 response.sendRedirect("index.jsp");

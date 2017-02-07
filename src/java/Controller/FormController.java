@@ -85,7 +85,7 @@ public class FormController {
                 }
         }
         else{
-            result="<div class='createError'>you may put charecters no valids</div>";
+            result="<div class='createError'>You may have left empty fields or entered invalid characters</div>";
         }
         return result;
     }
@@ -121,5 +121,59 @@ public class FormController {
         
         
        return formView.tableListView(ArrayData,nameFormSelected);
+    }
+    public String addRowViewForm(HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta) throws FileNotFoundException, IOException{
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+     
+        formObj.setData(formADOObj.getDataForm());
+        String[]  ArrayData={};
+        FormView formView= new FormView();
+        
+        return formView.addRowView(formObj.getData().toArray(ArrayData)[0]);
+    }
+
+    public boolean addRow(HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException {
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+        formObj.setData(formADOObj.getDataForm());
+        
+        boolean check=true;
+        String lineBuilder="";
+        String[]  ArrayData={};
+        ArrayData=formObj.getData().toArray(ArrayData);
+        
+        for(String camp:ArrayData[0].split(":")){
+            if(camp.split(";")[1].equals("text")){
+                    if(ValidationForm.noEspecialCharsWthSpace(request.getParameter(camp.split(";")[0]+"Add"))){
+                        lineBuilder+=request.getParameter(camp.split(";")[0]+"Add")+":";
+                    }
+                    else{
+                        check=false;
+                    }
+            }
+            else{
+                    if(ValidationForm.isInt(request.getParameter(camp.split(";")[0]+"Add"))!=-1){
+                        lineBuilder+=request.getParameter(camp.split(";")[0]+"Add")+":";
+                    }
+                    else{
+                        check=false;
+                    }
+            }
+            
+        }
+        
+        if(check){
+            lineBuilder+="\r\n";
+            formADOObj.insertRow(lineBuilder);
+            return true;
+        }
+        else{
+               return false;
+        }
     }
 }

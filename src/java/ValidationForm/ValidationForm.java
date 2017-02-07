@@ -45,7 +45,7 @@ public class ValidationForm {
         return returned;
     }
     public static int isInt(String value){
-      int returned=0;
+      int returned=-1;
         try{
             returned=Integer.parseInt(value);
         }catch(Exception error){
