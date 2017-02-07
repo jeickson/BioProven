@@ -176,4 +176,52 @@ public class FormController {
                return false;
         }
     }
+    public String consultRowForm(HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException{
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+     
+        formObj.setData(formADOObj.getDataForm());
+        String[] ArrayCamps={};
+        ArrayCamps= formObj.getData().toArray(ArrayCamps);
+        
+        String formConsultBuilder="";
+        FormView formView= new FormView();
+        formConsultBuilder=formView.SelectFieldAndFilterView(ArrayCamps[0]);
+        
+        return formConsultBuilder;
+    }
+
+    public String findRows(HttpServletRequest request, HttpServletResponse response, String nameFormSelected, String ruta)throws FileNotFoundException, IOException {
+       FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+        
+        formObj.setData(formADOObj.findRowsForm());
+         String[] ArrayCamps={};
+         ArrayCamps= formObj.getData().toArray(ArrayCamps);
+        List<String> arrayrows=new ArrayList(); 
+        arrayrows.add(ArrayCamps[0]);
+                
+        int i=0;
+        for(String camp:ArrayCamps[0].split(":")){
+            if(request.getParameter("selectedFieldToFilter").equals(camp.split(";")[0])){
+                break;
+            }
+            i++;
+        }
+        for(int k=1;k<ArrayCamps.length;k++){
+            if(ArrayCamps[k].split(":")[i].equals(request.getParameter("inputFilter"))){
+                arrayrows.add(ArrayCamps[k]);
+            }
+        }
+        String[] finalArrayRowFinded={};
+        finalArrayRowFinded=arrayrows.toArray(finalArrayRowFinded);
+       
+        FormView formView= new FormView();
+       
+        return formView.tableListView(finalArrayRowFinded,nameFormSelected);
+    }
 }

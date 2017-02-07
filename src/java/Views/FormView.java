@@ -160,5 +160,31 @@ public class FormView {
        AddRowBuilder+="</table></form>";
        return AddRowBuilder;
     }
+    public String SelectFieldAndFilterView(String camps){
+       String  consultFormBuilder=""
+                + "<form method='post'action='MainController' id='formConsultRow'>"
+                    + "<table id='tableConsultRow'>"
+                            + "<tr>"
+                                + "<th>Field</th>"
+                                + "<th>Filter</th>"
+                                + "<th></th>"
+                            + "</tr>"
+                            + "<tr>"
+                                + "<td>"
+                                    + "<select name='selectedFieldToFilter' id='selectFieldToFilter'>";
+       for(String field:camps.split(":")){
+                     consultFormBuilder+="<option value='"+field.split(";")[0]+"'>"+field.split(";")[0]+"</option>";
+           
+       }
+                 consultFormBuilder+="</select>"
+                                + "</td>"
+                                + "<td><input type='text' name='inputFilter'/></td>"
+                                + "<td><input type='submit' name='consultRowSubmit' value='Search'/></td>"
+                            + "</tr>"
+                    + "</table>"
+            + "</form>";
+        return consultFormBuilder;
+    }
+
     
 }

@@ -144,14 +144,15 @@ public class MainController extends HttpServlet {
                                         optionBuilder+=formControllerObj.listForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "toAdd":
-                                         optionBuilder+=formControllerObj.addRowViewForm(request,response,(String) session.getAttribute("formSelected"),ruta);
+                                        optionBuilder+=formControllerObj.addRowViewForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "toConsult":
+                                        optionBuilder+=formControllerObj.consultRowForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "toDelete":
                                         break;
                                     case "inform":
-                                        break;
+                                        break; 
                                     default:
                                         break;
                                 }
@@ -191,6 +192,24 @@ public class MainController extends HttpServlet {
                      request.setAttribute("formBuilded", result);
                      oDispatcher=request.getRequestDispatcher("bioproven.jsp");
                      oDispatcher.forward(request,response);
+                 }else{
+                     response.sendRedirect("bioproven.jsp");
+                 }
+            }else if(request.getParameter("consultRowSubmit")!=null){
+                
+                 HttpSession session = request.getSession();
+                 String result="";
+                 if(session.getAttribute("formSelected")!=null){
+                     
+                     result=formControllerObj.searchFormMenu(); 
+                     result+=formControllerObj.findRows(request, response,(String) session.getAttribute("formSelected"), ruta);
+                     
+                      request.setAttribute("formBuilded", result);
+                     oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                     oDispatcher.forward(request,response);
+                     
+                 }else{
+                     response.sendRedirect("bioproven.jsp");
                  }
             }
             else{

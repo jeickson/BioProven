@@ -239,3 +239,19 @@ main{
     position: relative;
     left: 100%;
 }
+#formConsultRow{
+    width: 50%;
+    height: 15%;
+    margin:auto;
+    margin-top: 1%; 
+    font-size: 1vw;
+    background:#e6e6e6;
+    border-radius: 10em;      
+    border: solid 2px #00fffc;
+    text-align: center;
+    padding-top: 1.5%;
+}
+
+#tableConsultRow{
+    margin:auto;
+}
