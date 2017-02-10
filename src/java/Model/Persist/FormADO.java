@@ -70,4 +70,8 @@ public class FormADO {
         DataFileManagement dataFileObj= new DataFileManagement(this.ruta);
         return dataFileObj.getAllData();
     }
+    public void insertRows(String[] linesBuilder)throws FileNotFoundException, IOException {
+        DataFileManagement dataFileObj= new DataFileManagement(this.ruta);
+            dataFileObj.insertRegisterCreating(linesBuilder);
+    }
 }

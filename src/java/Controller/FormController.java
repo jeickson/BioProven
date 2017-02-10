@@ -13,6 +13,7 @@ import Views.FormView;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,7 +150,7 @@ public class FormController {
         
         for(String camp:ArrayData[0].split(":")){
             if(camp.split(";")[1].equals("text")){
-                    if(ValidationForm.noEspecialCharsWthSpace(request.getParameter(camp.split(";")[0]+"Add"))){
+                    if(ValidationForm.onlyVarcharWthSpace(request.getParameter(camp.split(";")[0]+"Add"))){
                         lineBuilder+=request.getParameter(camp.split(";")[0]+"Add")+":";
                     }
                     else{
@@ -223,5 +224,131 @@ public class FormController {
         FormView formView= new FormView();
        
         return formView.tableListView(finalArrayRowFinded,nameFormSelected);
+    }
+     public String deleteRowForm(HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException{
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+     
+        formObj.setData(formADOObj.getDataForm());
+        String[] ArrayCamps={};
+        ArrayCamps= formObj.getData().toArray(ArrayCamps);
+        
+        String formConsultBuilder="";
+        FormView formView= new FormView();
+        formConsultBuilder=formView.SelectFieldAndFilterDeleteView(ArrayCamps[0]);
+        
+        return formConsultBuilder;
+    }
+     public void deleteRows (HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException{
+          FormClass formObj=new FormClass(nameFormSelected,"");       
+            HttpSession session = request.getSession(true);
+            UserClass userObj = (UserClass) session.getAttribute("user");
+            FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+            
+            formObj.setData(formADOObj.findRowsForm());
+             String[] ArrayCamps={};
+             ArrayCamps= formObj.getData().toArray(ArrayCamps);
+            List<String> arrayrows=new ArrayList(); 
+            arrayrows.add(ArrayCamps[0]);
+
+            int i=0;
+            for(String camp:ArrayCamps[0].split(":")){
+                if(request.getParameter("selectedFieldToFilter").equals(camp.split(";")[0])){
+                    break;
+                }
+                i++;
+            }
+            for(int k=1;k<ArrayCamps.length;k++){
+                if(!ArrayCamps[k].split(":")[i].equals(request.getParameter("inputFilter"))){
+                    arrayrows.add(ArrayCamps[k]);
+                }
+            }
+            //ToDO insert Arrayrows
+            String[] finalArrayRowFinded={};
+            finalArrayRowFinded=arrayrows.toArray(finalArrayRowFinded);
+            formADOObj.insertRows(finalArrayRowFinded);
+                    
+     }
+     public String GenerateInformView (HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException{
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+     
+        formObj.setData(formADOObj.getDataForm());
+        String[] ArrayCamps={};
+        ArrayCamps= formObj.getData().toArray(ArrayCamps);
+        
+        String formConsultBuilder="";
+        FormView formView= new FormView();
+        formConsultBuilder=formView.SelectFieldGraphicsView(ArrayCamps[0]);
+        
+        return formConsultBuilder;
+     }
+     
+     public String GenerateGraphics (HttpServletRequest request, HttpServletResponse response,String nameFormSelected,String ruta)throws FileNotFoundException, IOException{
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+     
+        formObj.setData(formADOObj.getDataForm());
+        String[] ArrayCamps={};
+        ArrayCamps= formObj.getData().toArray(ArrayCamps);
+        HashMap<String,Integer>valors= new HashMap<>();
+        int i=0;
+        for(String camp:ArrayCamps[0].split(":")){
+            if(request.getParameter("selectedFieldToFilter").equals(camp.split(";")[0])){
+                break;
+            }
+            i++;
+        }
+        int total=0;
+        for(int k=1;k<ArrayCamps.length;k++){
+                if(!valors.containsKey(ArrayCamps[k].split(":")[i])){
+                    total=0;
+                    for(int j=1;j<ArrayCamps.length;j++){
+                     if (ArrayCamps[k].split(":")[i].equals(ArrayCamps[j].split(":")[i])){
+                         total++;
+                     }
+                    }
+                    valors.put(ArrayCamps[k].split(":")[i],total);
+                }
+            }
+        
+         session.setAttribute("valors",valors);
+         session.setAttribute("fieldSelected",request.getParameter("selectedFieldToFilter"));
+         FormView formView= new FormView();
+         
+            return formView.lookGraphics();
+     }
+
+    void pdfCreator(HttpServletRequest request, HttpServletResponse response, String nameFormSelected, String ruta)throws FileNotFoundException, IOException {
+        FormClass formObj=new FormClass(nameFormSelected,"");       
+        HttpSession session = request.getSession(true);
+        UserClass userObj = (UserClass) session.getAttribute("user");
+        FormADO formADOObj = new FormADO(ruta+"/files/"+userObj.getNick()+"/"+userObj.getNick()+userObj.getDni()+"/"+nameFormSelected);
+        
+        formObj.setData(formADOObj.findRowsForm());
+         String[] ArrayCamps={};
+         ArrayCamps= formObj.getData().toArray(ArrayCamps);
+        List<String> arrayrows=new ArrayList(); 
+        arrayrows.add(ArrayCamps[0]);
+                
+        int i=0;
+        for(String camp:ArrayCamps[0].split(":")){
+            if(request.getParameter("selectedFieldToFilter").equals(camp.split(";")[0])){
+                break;
+            }
+            i++;
+        }
+        for(int k=1;k<ArrayCamps.length;k++){
+            if(ArrayCamps[k].split(":")[i].equals(request.getParameter("inputFilter"))){
+                arrayrows.add(ArrayCamps[k]);
+            }
+        }
+        session.setAttribute("arrayrows",arrayrows);
     }
 }

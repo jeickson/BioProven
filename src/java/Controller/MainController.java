@@ -150,8 +150,10 @@ public class MainController extends HttpServlet {
                                         optionBuilder+=formControllerObj.consultRowForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "toDelete":
+                                         optionBuilder+=formControllerObj.deleteRowForm(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break;
                                     case "inform":
+                                        optionBuilder+=formControllerObj.GenerateInformView(request,response,(String) session.getAttribute("formSelected"),ruta);
                                         break; 
                                     default:
                                         break;
@@ -170,6 +172,7 @@ public class MainController extends HttpServlet {
                     else{
                         response.sendRedirect("bioproven.jsp");
                     }
+                    
             }else if (request.getParameter("addRowSubmit")!=null){
                 HttpSession session = request.getSession();
                  String result="";
@@ -200,10 +203,16 @@ public class MainController extends HttpServlet {
                  HttpSession session = request.getSession();
                  String result="";
                  if(session.getAttribute("formSelected")!=null){
-                     
-                     result=formControllerObj.searchFormMenu(); 
-                     result+=formControllerObj.findRows(request, response,(String) session.getAttribute("formSelected"), ruta);
-                     
+                     try{
+                        result=formControllerObj.searchFormMenu(); 
+                        result+=formControllerObj.findRows(request, response,(String) session.getAttribute("formSelected"), ruta);
+                     }
+                      catch(FileNotFoundException notFound){
+                        result="<form class='createError'>Error to connect with DataBase</form>";
+                        }
+                        catch(IOException ex){
+                         result="<form class='createError'>unexpected error</form>";
+                        }
                       request.setAttribute("formBuilded", result);
                      oDispatcher=request.getRequestDispatcher("bioproven.jsp");
                      oDispatcher.forward(request,response);
@@ -211,8 +220,79 @@ public class MainController extends HttpServlet {
                  }else{
                      response.sendRedirect("bioproven.jsp");
                  }
-            }
-            else{
+            }else if(request.getParameter("deleteRowSubmit")!=null){
+                HttpSession session = request.getSession();
+                 String result="";
+                 if(session.getAttribute("formSelected")!=null){
+                      try{
+                            result=formControllerObj.searchFormMenu(); 
+                            formControllerObj.deleteRows(request, response,(String) session.getAttribute("formSelected"), ruta);
+                            result+="<form class='createCorrecly'>deleting Correctly</form>";
+                        }
+                      catch(FileNotFoundException notFound){
+                            result="<form class='createError'>Error to connect with DataBase</form>";
+                        }
+                     catch(IOException ex){
+                            result="<form class='createError'>unexpected error</form>";
+                        }
+                        request.setAttribute("formBuilded", result);
+                        oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                        oDispatcher.forward(request,response);
+                      
+                 }else{
+                    response.sendRedirect("bioproven.jsp");
+                 }
+            }else if(request.getParameter("genGraphicsSubmit")!=null){
+                HttpSession session = request.getSession();
+                 String result="";
+                 if(session.getAttribute("formSelected")!=null){
+                     try{
+                            result=formControllerObj.searchFormMenu(); 
+                            result+=formControllerObj.GenerateGraphics(request, response,(String) session.getAttribute("formSelected"), ruta);
+                        }
+                      catch(FileNotFoundException notFound){
+                            result="<form class='createError'>Error to connect with DataBase</form>";
+                        }
+                     catch(IOException ex){
+                            result="<form class='createError'>unexpected error</form>";
+                        }
+                        request.setAttribute("formBuilded", result);
+                        oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                        oDispatcher.forward(request,response);
+                 } else{
+                    response.sendRedirect("bioproven.jsp");
+                 }
+            }  else if(request.getParameter("exportPDFSubmit")!=null){
+                
+                 HttpSession session = request.getSession();
+                 String result="";
+                 String pdfBuider="";
+                 if(session.getAttribute("formSelected")!=null){
+                     try{
+                        result=formControllerObj.searchFormMenu(); 
+                        formControllerObj.pdfCreator(request, response,(String) session.getAttribute("formSelected"), ruta);
+                        
+                        response.sendRedirect("Templates/pdf.jsp");
+                     }
+                      catch(FileNotFoundException notFound){
+                        result="<form class='createError'>Error to connect with DataBase</form>";
+                            request.setAttribute("formBuilded", result);
+                         oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                         oDispatcher.forward(request,response);
+                        }
+                        catch(IOException ex){
+                         result="<form class='createError'>unexpected error</form>";
+                            request.setAttribute("formBuilded", result);
+                        oDispatcher=request.getRequestDispatcher("bioproven.jsp");
+                        oDispatcher.forward(request,response);
+                        }
+                      
+                     
+                 }else{
+                     response.sendRedirect("bioproven.jsp");
+                 }
+            
+            }else{
                 response.sendRedirect("index.jsp");
             }
            

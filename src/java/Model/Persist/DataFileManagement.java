@@ -85,4 +85,13 @@ public class DataFileManagement {
         br.close();      
         return all;
     }
+    public void insertRegisterCreating (String[] lines) throws FileNotFoundException, IOException{
+                FileWriter fout = new FileWriter(new File(this.filePath));
+                for(int i=0;i<lines.length;i++)
+                {
+                    fout.write(lines[i]+"\r\n");
+                }
+                    
+       fout.close();
+    }
 }

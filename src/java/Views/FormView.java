@@ -168,6 +168,7 @@ public class FormView {
                                 + "<th>Field</th>"
                                 + "<th>Filter</th>"
                                 + "<th></th>"
+                                + "<th></th>"
                             + "</tr>"
                             + "<tr>"
                                 + "<td>"
@@ -180,11 +181,62 @@ public class FormView {
                                 + "</td>"
                                 + "<td><input type='text' name='inputFilter'/></td>"
                                 + "<td><input type='submit' name='consultRowSubmit' value='Search'/></td>"
+                                + "<td><input type='submit' name='exportPDFSubmit' value='Export PDF'/></td>"
+                            + "</tr>"
+                    + "</table>"
+            + "</form>";
+        return consultFormBuilder;
+    }
+    public String SelectFieldAndFilterDeleteView(String camps){
+       String  consultFormBuilder=""
+                + "<form method='post'action='MainController' id='formConsultDeleteRow'>"
+                    + "<table id='tableConsultRow'>"
+                            + "<tr>"
+                                + "<th>Field</th>"
+                                + "<th>Filter</th>"
+                                + "<th></th>"
+                            + "</tr>"
+                            + "<tr>"
+                                + "<td>"
+                                    + "<select name='selectedFieldToFilter' id='selectFieldToFilter'>";
+       for(String field:camps.split(":")){
+                     consultFormBuilder+="<option value='"+field.split(";")[0]+"'>"+field.split(";")[0]+"</option>";
+           
+       }
+                 consultFormBuilder+="</select>"
+                                + "</td>"
+                                + "<td><input type='text' name='inputFilter'/></td>"
+                                + "<td><input type='submit' name='deleteRowSubmit' value='Search'/></td>"
+                            + "</tr>"
+                    + "</table>"
+            + "</form>";
+        return consultFormBuilder;
+    }
+     public String SelectFieldGraphicsView(String camps){
+       String  consultFormBuilder=""
+                + "<form method='post'action='MainController' id='formConsultRow'>"
+                    + "<table id='tableConsultRow'>"
+                            + "<tr>"
+                                + "<th>Field</th>"
+                                + "<th></th>"
+                            + "</tr>"
+                            + "<tr>"
+                                + "<td>"
+                                    + "<select name='selectedFieldToFilter' id='selectFieldToFilter'>";
+       for(String field:camps.split(":")){
+                     consultFormBuilder+="<option value='"+field.split(";")[0]+"'>"+field.split(";")[0]+"</option>";
+           
+       }
+                 consultFormBuilder+="</select>"
+                                + "</td>"
+                                + "<td><input type='submit' name='genGraphicsSubmit' value='Generate Graphs'/></td>"
                             + "</tr>"
                     + "</table>"
             + "</form>";
         return consultFormBuilder;
     }
 
-    
+    public String lookGraphics() {
+        return "<div id='graphic'><img src='Templates/bar.jsp' /></div>";
+    }
 }
